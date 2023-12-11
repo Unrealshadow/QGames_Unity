@@ -142,6 +142,18 @@ public class StageLoop : MonoBehaviour
 	{
 		m_game_score += a_value;
 		RefreshScore();
+	}public void RemoveScore(int a_value)
+	{
+		if (m_game_score > 0)
+		{
+			m_game_score -= a_value;
+			
+		}
+		else
+		{
+			m_game_score = 0;
+		}
+		RefreshScore();
 	}
 
 	void RefreshScore()

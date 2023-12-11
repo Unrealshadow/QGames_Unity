@@ -79,6 +79,12 @@ public class Enemy : MonoBehaviour
             AudioManager.Instance.PlaySoundEffect(hitSfx[Random.Range(0, hitSfx.Count)]);
             DestroyByPlayer(player_bullet);
         }
+
+        if (other.CompareTag("Bound") && StageLoop.Instance.currentState == GameState.Playing)
+        {
+            StageLoop.Instance.RemoveScore(m_score);
+            Destroy(gameObject);
+        }
     }
 
 
