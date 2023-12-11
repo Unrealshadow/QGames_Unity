@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     [Header("Parameter")] public float m_move_speed = 1;
     public Transform shootPoint;
     public AudioClip shootClip;
+    public AudioClip death;
+    public GameObject deathVFX;
     [Header("Components")] public Animator animator;
     public AnimatedTexture animatedTexture;
     
@@ -26,7 +28,7 @@ public class Player : MonoBehaviour
     //
     private IEnumerator MainCoroutine()
     {
-        while (true)
+        while (true && StageLoop.Instance.currentState == GameState.Playing)
         {
             Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
             if (movement.magnitude > 1)
@@ -49,7 +51,10 @@ public class Player : MonoBehaviour
                 bullet.transform.position = shootPoint.position;
             }
 
-            transform.position += movement * m_move_speed * Time.deltaTime;
+            Vector3 newPosition = transform.position + movement * m_move_speed * Time.deltaTime;
+            newPosition = ClampPositionToScreen(newPosition);
+
+            transform.position = newPosition;
 
             yield return null;
         }
@@ -58,9 +63,30 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
-        {
+        {        StageLoop.Instance.currentState = GameState.GameOver;
+
             animator.SetTrigger("Death");
+            Instantiate(deathVFX,transform.position,Quaternion.identity);
+            AudioManager.Instance.PlaySoundEffect(death);
+            Time.timeScale = 0.5f;
             StageLoop.Instance.gameOverLoop.StartGameOverLoop(StageLoop.Instance.GetCurrentScore());
         }
     }
+    
+    private Vector3 ClampPositionToScreen(Vector3 position)
+    {
+        float colliderRadius = GetComponent<SphereCollider>().radius;
+
+        float minX = CameraDimensions.Instance.BottomLeft.x + colliderRadius;
+        float maxX = CameraDimensions.Instance.BottomRight.x - colliderRadius;
+        float minY = CameraDimensions.Instance.BottomLeft.y + colliderRadius;
+        float maxY = CameraDimensions.Instance.TopLeft.y - colliderRadius;
+
+        // Clamp the position to be within the camera's view
+        position.x = Mathf.Clamp(position.x, minX, maxX);
+        position.y = Mathf.Clamp(position.y, minY, maxY);
+
+        return position;
+    }
+
 }

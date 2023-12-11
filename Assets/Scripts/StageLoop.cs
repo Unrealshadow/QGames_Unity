@@ -6,13 +6,19 @@ using UnityEngine.UI;
 /// <summary>
 /// Stage main loop
 /// </summary>
+
+public enum GameState
+{
+	Playing,
+	GameOver
+}
 public class StageLoop : MonoBehaviour
 {
 	#region static 
 	static public StageLoop Instance { get; private set; }
 	#endregion
 
-	//
+	[Header("Components")]
 	public TitleLoop m_title_loop;
 	public GameOverLoop gameOverLoop;
 	[Header("Layout")]
@@ -23,16 +29,32 @@ public class StageLoop : MonoBehaviour
 	public Player m_prefab_player;
 	public EnemySpawner m_prefab_enemy_spawner;
 
+	[Header("Params")]
+	public GameState currentState;
+
 	
 	//
 	int m_game_score = 0;
-	
+
 
 	//------------------------------------------------------------------------------
-	
+	private void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else if (Instance != this)
+		{
+			Destroy(gameObject);
+			return;
+		}
+	}
+
 	#region loop
 	public void StartStageLoop()
-	{
+	{    currentState = GameState.Playing;
+
 		StartCoroutine(StageCoroutine());
 	}
 
@@ -45,9 +67,18 @@ public class StageLoop : MonoBehaviour
 
 		SetupStage();
 
-		
-		yield return null;
+		while (currentState == GameState.Playing)
+		{
+			// Game loop code here
+			yield return null;
+		}
+
+		if (currentState == GameState.GameOver)
+		{
+			gameOverLoop.StartGameOverLoop(m_game_score);
+		}
 	}
+
 	#endregion
 
 
@@ -91,6 +122,8 @@ public class StageLoop : MonoBehaviour
 
 	public void CleanupStage()
 	{
+		Time.timeScale = 1f;
+
 		//delete all object in Stage
 		{
 			for (var n = 0; n < m_stage_transform.childCount; ++n)

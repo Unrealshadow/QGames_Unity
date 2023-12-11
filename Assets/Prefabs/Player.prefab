@@ -83,6 +83,8 @@ MonoBehaviour:
   m_move_speed: 4
   shootPoint: {fileID: 248923852392934823}
   shootClip: {fileID: 8300000, guid: 4a0b3fab5bf89d446852bc3953ee4b26, type: 3}
+  death: {fileID: 8300000, guid: addc8f18ad7373c43ab19ff8e8769319, type: 3}
+  deathVFX: {fileID: 3432958286849152088, guid: 87ee7299dd44ed747af24dbb91bcd33b, type: 3}
   animator: {fileID: 1242879407705526503}
   animatedTexture: {fileID: 239856698177611893}
 --- !u!135 &4423549389810730443
