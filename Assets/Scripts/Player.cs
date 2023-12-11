@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public AudioClip shootClip;
     [Header("Components")] public Animator animator;
     public AnimatedTexture animatedTexture;
+    
     //------------------------------------------------------------------------------
 
     public void StartRunning()
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             animator.SetTrigger("Death");
+            StageLoop.Instance.gameOverLoop.StartGameOverLoop(StageLoop.Instance.GetCurrentScore());
         }
     }
 }

@@ -14,7 +14,7 @@ public class StageLoop : MonoBehaviour
 
 	//
 	public TitleLoop m_title_loop;
-
+	public GameOverLoop gameOverLoop;
 	[Header("Layout")]
 	public Transform m_stage_transform;
 	public Text m_stage_score_text;
@@ -45,17 +45,8 @@ public class StageLoop : MonoBehaviour
 
 		SetupStage();
 
-		while (true)
-		{
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				//exit stage
-				CleanupStage();
-				m_title_loop.StartTitleLoop();
-				yield break;
-			}
-			yield return null;
-		}
+		
+		yield return null;
 	}
 	#endregion
 
@@ -98,7 +89,7 @@ public class StageLoop : MonoBehaviour
 		}
 	}
 
-	void CleanupStage()
+	public void CleanupStage()
 	{
 		//delete all object in Stage
 		{

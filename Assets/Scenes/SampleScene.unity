@@ -2807,6 +2807,7 @@ GameObject:
   - component: {fileID: 1106369388}
   - component: {fileID: 1106369387}
   - component: {fileID: 1106369389}
+  - component: {fileID: 1106369390}
   m_Layer: 0
   m_Name: GameFlow
   m_TagString: Untagged
@@ -2842,6 +2843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_title_loop: {fileID: 1106369388}
+  gameOverLoop: {fileID: 1106369390}
   m_stage_transform: {fileID: 431413297}
   m_stage_score_text: {fileID: 999465702}
   m_prefab_player: {fileID: 8345280602849411046, guid: 6ac43da3da70c1a4e97cf724e73a4dd7, type: 3}
@@ -2873,6 +2875,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 963194230}
+--- !u!114 &1106369390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106369384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b71465bb49f45a43873c8384199d818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageLoop: {fileID: 1106369387}
+  uiGameOver: {fileID: 729832394}
+  scoreText: {fileID: 999465702}
+  titleLoop: {fileID: 1106369388}
 --- !u!1 &1109414498
 GameObject:
   m_ObjectHideFlags: 0
