@@ -8,15 +8,18 @@ using UnityEngine;
 /// </summary>
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Prefabs")] 
-    public List<Enemy> enemyPrefabs; // List to hold different enemy prefabs
+    [Header("Prefabs")] public List<Enemy> enemyPrefabs;
 
-    [Header("Parameters")] 
-    public float m_spawn_interval_min = 2;
-    public float m_spawn_interval_max = 4;
+    [Header("Parameters")] public float m_spawn_interval_min = 6;
+    public float m_spawn_interval_max = 8;
+
+    public float minimumSpawnInterval = 2; // Minimum spawn interval
+
+    private int lastScoreCheck = 0;
+    private int scoreInterval = 100; // Score interval for decreasing spawn rate
+
 
     //------------------------------------------------------------------------------
-
     public void StartRunning()
     {
         StartCoroutine(MainCoroutine());
@@ -26,7 +29,10 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
+            AdjustSpawnRateBasedOnScore();
+
             yield return new WaitForSeconds(Random.Range(m_spawn_interval_min, m_spawn_interval_max));
+
 
             // Randomly select an enemy to spawn from the list
             if (enemyPrefabs != null && enemyPrefabs.Count > 0)
@@ -46,6 +52,18 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    private void AdjustSpawnRateBasedOnScore()
+    {
+        int currentScore = StageLoop.Instance.GetCurrentScore(); // Get the current score
+
+        if (currentScore - lastScoreCheck >= scoreInterval)
+        {
+            lastScoreCheck = currentScore;
+
+            m_spawn_interval_min = Mathf.Max(minimumSpawnInterval, m_spawn_interval_min - 0.1f);
+            m_spawn_interval_max = Mathf.Max(minimumSpawnInterval, m_spawn_interval_max - 0.1f);
+        }
+    }
 
     //------------------------------------------------------------------------------
 
