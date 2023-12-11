@@ -4,5 +4,7 @@
 3.  Completed game loop, with game restart.
 4.  Added particle effects, SFX and BGM.
 5.  Added dash move for player.
+6. Added animations to player, enemies.
+7. Made addition of new enemies easier.
 
 #### All components and values are editable from the inspector for easy tweaking.
